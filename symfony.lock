@@ -90,6 +90,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.3"
     },
+    "moncareyws/foundation-bundle": {
+        "version": "dev-master"
+    },
     "monolog/monolog": {
         "version": "1.25.3"
     },
@@ -136,6 +139,18 @@
         },
         "files": [
             "config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "410b9325a37ef86f1e47262c61738f6202202bca"
+        },
+        "files": [
+            "public/.htaccess"
         ]
     },
     "symfony/asset": {
@@ -389,13 +404,13 @@
         "version": "v4.4.7"
     },
     "symfony/security-csrf": {
-        "version": "v4.4.7"
+        "version": "4.4.x-dev"
     },
     "symfony/security-guard": {
-        "version": "v4.4.7"
+        "version": "4.4.x-dev"
     },
     "symfony/security-http": {
-        "version": "v4.4.7"
+        "version": "4.4.x-dev"
     },
     "symfony/serializer": {
         "version": "v4.4.7"
@@ -487,6 +502,9 @@
     "symfony/yaml": {
         "version": "v4.4.7"
     },
+    "twbs/bootstrap": {
+        "version": "v4.4.1"
+    },
     "twig/extra-bundle": {
         "version": "v3.0.3"
     },
@@ -498,5 +516,8 @@
     },
     "webmozart/assert": {
         "version": "1.8.0"
+    },
+    "zurb/foundation": {
+        "version": "v6.6.3"
     }
 }
