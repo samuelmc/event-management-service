@@ -22,7 +22,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $Username;
+    private $username;
 
     /**
      * @ORM\Column(type="json")
@@ -38,22 +38,22 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Email;
+    private $email;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $Active;
+    private $active;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $CreatedAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $UpdatedAt;
+    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="CreatedBy", orphanRemoval=true)
@@ -77,12 +77,12 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->Username;
+        return (string) $this->username;
     }
 
-    public function setUsername(string $Username): self
+    public function setUsername(string $username): self
     {
-        $this->Username = $Username;
+        $this->username = $username;
 
         return $this;
     }
@@ -140,48 +140,48 @@ class User implements UserInterface
 
     public function getEmail(): ?string
     {
-        return $this->Email;
+        return $this->email;
     }
 
-    public function setEmail(string $Email): self
+    public function setEmail(string $email): self
     {
-        $this->Email = $Email;
+        $this->email = $email;
 
         return $this;
     }
 
     public function getActive(): ?bool
     {
-        return $this->Active;
+        return $this->active;
     }
 
-    public function setActive(bool $Active): self
+    public function setActive(bool $active): self
     {
-        $this->Active = $Active;
+        $this->active = $active;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->CreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $CreatedAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->CreatedAt = $CreatedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->UpdatedAt;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $UpdatedAt): self
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
-        $this->UpdatedAt = $UpdatedAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

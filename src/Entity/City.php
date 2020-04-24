@@ -21,22 +21,22 @@ class City
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $Active;
+    private $active;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $CreatedAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $UpdatesAt;
+    private $updatesAt;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="City", orphanRemoval=true)
@@ -55,48 +55,48 @@ class City
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getActive(): ?bool
     {
-        return $this->Active;
+        return $this->active;
     }
 
-    public function setActive(bool $Active): self
+    public function setActive(bool $active): self
     {
-        $this->Active = $Active;
+        $this->active = $active;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->CreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $CreatedAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->CreatedAt = $CreatedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatesAt(): ?\DateTimeInterface
     {
-        return $this->UpdatesAt;
+        return $this->updatesAt;
     }
 
-    public function setUpdatesAt(\DateTimeInterface $UpdatesAt): self
+    public function setUpdatesAt(\DateTimeInterface $updatesAt): self
     {
-        $this->UpdatesAt = $UpdatesAt;
+        $this->updatesAt = $updatesAt;
 
         return $this;
     }

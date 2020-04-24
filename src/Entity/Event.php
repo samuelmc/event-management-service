@@ -20,53 +20,53 @@ class Event
      * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $City;
+    private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Title;
+    private $title;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $Description;
+    private $description;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $Active;
+    private $active;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $MaxParticipants;
+    private $maxParticipants;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $StartTime;
+    private $startTime;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $EndTime;
+    private $endTime;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $CreatedAt;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $UpdateAt;
+    private $updateAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $CreatedBy;
+    private $createdBy;
 
     public function getId(): ?int
     {
@@ -75,120 +75,120 @@ class Event
 
     public function getCity(): ?City
     {
-        return $this->City;
+        return $this->city;
     }
 
-    public function setCity(?City $City): self
+    public function setCity(?City $city): self
     {
-        $this->City = $City;
+        $this->city = $city;
 
         return $this;
     }
 
     public function getTitle(): ?string
     {
-        return $this->Title;
+        return $this->title;
     }
 
-    public function setTitle(string $Title): self
+    public function setTitle(string $title): self
     {
-        $this->Title = $Title;
+        $this->title = $title;
 
         return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->Description;
+        return $this->description;
     }
 
-    public function setDescription(string $Description): self
+    public function setDescription(string $description): self
     {
-        $this->Description = $Description;
+        $this->description = $description;
 
         return $this;
     }
 
     public function getActive(): ?bool
     {
-        return $this->Active;
+        return $this->active;
     }
 
-    public function setActive(bool $Active): self
+    public function setActive(bool $active): self
     {
-        $this->Active = $Active;
+        $this->active = $active;
 
         return $this;
     }
 
     public function getMaxParticipants(): ?int
     {
-        return $this->MaxParticipants;
+        return $this->maxParticipants;
     }
 
-    public function setMaxParticipants(int $MaxParticipants): self
+    public function setMaxParticipants(int $maxParticipants): self
     {
-        $this->MaxParticipants = $MaxParticipants;
+        $this->maxParticipants = $maxParticipants;
 
         return $this;
     }
 
     public function getStartTime(): ?\DateTimeInterface
     {
-        return $this->StartTime;
+        return $this->startTime;
     }
 
-    public function setStartTime(\DateTimeInterface $StartTime): self
+    public function setStartTime(\DateTimeInterface $startTime): self
     {
-        $this->StartTime = $StartTime;
+        $this->startTime = $startTime;
 
         return $this;
     }
 
     public function getEndTime(): ?\DateTimeInterface
     {
-        return $this->EndTime;
+        return $this->endTime;
     }
 
-    public function setEndTime(\DateTimeInterface $EndTime): self
+    public function setEndTime(\DateTimeInterface $endTime): self
     {
-        $this->EndTime = $EndTime;
+        $this->endTime = $endTime;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->CreatedAt;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $CreatedAt): self
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->CreatedAt = $CreatedAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdateAt(): ?\DateTimeInterface
     {
-        return $this->UpdateAt;
+        return $this->updateAt;
     }
 
-    public function setUpdateAt(\DateTimeInterface $UpdateAt): self
+    public function setUpdateAt(\DateTimeInterface $updateAt): self
     {
-        $this->UpdateAt = $UpdateAt;
+        $this->updateAt = $updateAt;
 
         return $this;
     }
 
     public function getCreatedBy(): ?User
     {
-        return $this->CreatedBy;
+        return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $CreatedBy): self
+    public function setCreatedBy(?User $createdBy): self
     {
-        $this->CreatedBy = $CreatedBy;
+        $this->createdBy = $createdBy;
 
         return $this;
     }
