@@ -5,9 +5,11 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class City
 {
@@ -36,10 +38,10 @@ class City
     /**
      * @ORM\Column(type="datetime")
      */
-    private $updatesAt;
+    private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="City", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="city", orphanRemoval=true)
      */
     private $events;
 
@@ -82,21 +84,31 @@ class City
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist()
+     *
+     * @return $this
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
 
-    public function getUpdatesAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updatesAt;
+        return $this->updatedAt;
     }
 
-    public function setUpdatesAt(\DateTimeInterface $updatesAt): self
+    /**
+     * @ORM\PreUpdate()
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(): self
     {
-        $this->updatesAt = $updatesAt;
+        $this->updatedAt = new \DateTime();
 
         return $this;
     }
