@@ -1,0 +1,52 @@
+{% extends 'layout/page.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block content %}
+    <div class="grid-x grid-margin-x">
+        <div class="cell large-7 medium-9 medium-offset-3 large-offset-0">
+            <h1 class="h3">Log in</h1>
+            <form name="login_form" method="post" action="{{ path('app_login') }}">
+                {% if error %}
+                    <div class="callout alert">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+                <label for="inputUsername"> Username</label>
+                <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
+                <label for="inputPassword">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+
+                <button class="button" type="submit">
+                    Sign in
+                </button>
+            </form>
+        </div>
+        <div class="cell large-1">
+            <p style="text-align: center">or</p>
+        </div>
+        <div class="cell large-7 medium-9 medium-offset-3 large-offset-0">
+            <h2 class="h3">Register</h2>
+            <form name="registration_form" method="post" action="{{ path('app_register') }}">
+
+                {{ form_row(registrationForm.username) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plain_password.first) }}
+                {{ form_row(registrationForm.plain_password.second) }}
+                {{ form_row(registrationForm.agree_terms) }}
+
+                {{ form_row(registrationForm._token) }}
+
+                <button type="submit" class="button">Register</button>
+             </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<!doctype html>
+<html class="no-js" lang="{{ app.getRequest.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% block styles %}
+        <link rel="stylesheet" href="/css/app.css">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {% for js_file, priority in js_files|sort %}
+        <script src="{{ js_file }}"></script>
+    {% endfor %}
+{% endblock %}
+</body>
 </html>

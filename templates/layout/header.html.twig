@@ -1,0 +1,23 @@
+<div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+    <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
+    <div class="title-bar-title">Menu</div>
+</div>
+
+<div class="top-bar" id="responsive-menu">
+    <div class="top-bar-left">
+        <ul class="menu">
+            <li><a href="{{ path('city_index') }}">Cities</a></li>
+            <li><a href="{{ path('event_index') }}">Events</a></li>
+        </ul>
+    </div>
+    <li class="top-bar-right">
+        <ul class="menu">
+            {% if app.user %}
+                <li><a href="{{ path('user_profile') }}">{{ app.user.username }}</a></li>
+                <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ path('app_login') }}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

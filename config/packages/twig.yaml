@@ -3,3 +3,9 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
+    globals:
+        js_files:
+            '/js/jquery.min.js': 0
+            '/js/what-input.min.js': 1
+            '/js/foundation.min.js': 2
+            '/js/app.js': 80

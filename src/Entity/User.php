@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
@@ -57,12 +59,13 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="CreatedBy", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="createdBy", orphanRemoval=true)
      */
     private $events;
 
     public function __construct()
     {
+        $this->active = true;
         $this->events = new ArrayCollection();
     }
 
@@ -156,7 +159,12 @@ class User implements UserInterface
         return $this->active;
     }
 
-    public function setActive(bool $active): self
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active = true): self
     {
         $this->active = $active;
 
@@ -186,6 +194,7 @@ class User implements UserInterface
     }
 
     /**
+     * @ORM\PrePersist()
      * @ORM\PreUpdate()
      *
      * @return $this
