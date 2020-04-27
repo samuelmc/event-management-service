@@ -69,6 +69,18 @@ class Event
      */
     private $createdBy;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+    public function __construct()
+    {
+        $now = new \DateTime();
+        $this->setStartTime($now);
+        $this->setEndTime($now);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -181,6 +193,7 @@ class Event
     }
 
     /**
+     * @ORM\PrePersist()
      * @ORM\PreUpdate()
      *
      * @return $this
@@ -197,9 +210,25 @@ class Event
         return $this->createdBy;
     }
 
+    public function isOwner(User $user) {
+        return $user === $this->createdBy;
+    }
+
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -19,32 +19,49 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
-    // /**
-    //  * @return City[] Returns an array of City objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int|null $page
+     * @param int|null $itemsPerPage
+     * @param string|null $search
+     * @param string|null $sort
+     * @param string|null $order
+     *
+     * @return City[]
+     */
+    public function findByPage(?int $page, ?int $itemsPerPage, string $search = '', string $sort = 'createdAt', string $order = 'desc')
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        if (!$page) $page = 1;
+        if (!$itemsPerPage || !in_array($itemsPerPage, [10,20,50,100])) $itemsPerPage = 10;
+        if (!$search) $search = '';
+        $offset = $itemsPerPage * ($page - 1);
+        $order = strtoupper($order);
 
-    /*
-    public function findOneBySomeField($value): ?City
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $orderByString = $sort == 'events' ? "city.createdAt" : "city.{$sort}";
+
+        /** @var City[] $cities */
+        $cities = $this->createQueryBuilder('city')
+            ->where("city.name LIKE CONCAT('%', :search, '%')")
+            ->setParameter('search', $search)
+            ->orderBy($orderByString, $order)
+            ->setMaxResults($itemsPerPage)->setFirstResult($offset)
+            ->getQuery()->getResult();
+
+        if ($sort == 'events') {
+            usort($cities, [$this, "sortByEventsCount{$order}"]);
+        }
+
+        return $cities;
     }
-    */
+
+    private function sortByEventsCountASC(City $a, City $b) {
+        if (count($a->getEvents()) > count($b->getEvents())) return 1;
+        if (count($a->getEvents()) < count($b->getEvents())) return -1;
+        return 0;
+    }
+
+    private function sortByEventsCountDESC(City $a, City $b) {
+        if (count($a->getEvents()) > count($b->getEvents())) return -1;
+        if (count($a->getEvents()) < count($b->getEvents())) return 1;
+        return 0;
+    }
 }

@@ -1,3 +1,33 @@
 main {
   margin-top: 2em;
 }
+
+.actions-column {
+  a {
+    display: inline-block;
+  }
+  form {
+    display: inline-block;
+  }
+  .button {
+    margin-bottom: 0;
+  }
+}
+
+#new-city-form-container {
+
+  .show-form-toggle {
+    display: none;
+  }
+
+  &.show-form {
+
+    .show-form-toggle {
+      display: block;
+    }
+
+    .new-city-toggle {
+      display: none;
+    }
+  }
+}

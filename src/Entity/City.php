@@ -45,6 +45,11 @@ class City
      */
     private $events;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -102,6 +107,7 @@ class City
     }
 
     /**
+     * @ORM\PrePersist()
      * @ORM\PreUpdate()
      *
      * @return $this
@@ -142,5 +148,22 @@ class City
         }
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

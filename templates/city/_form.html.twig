@@ -1,4 +1,5 @@
-{{ form_start(form) }}
+<form name="city" method="post" action="{{ path('city_new') }}">
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+    <button type="submit" class="button">Add city</button>
+    <button type="reset" class="button" data-toggle="new-city-form-container">Cancel</button>
+</form>

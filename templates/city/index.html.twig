@@ -1,41 +1,66 @@
 {% extends 'layout/page.html.twig' %}
 
-{% block title %}City index{% endblock %}
+{% block title %}Cities{% endblock %}
 
 {% block content %}
-    <h1>City index</h1>
 
-    <table class="table">
+    <h1>Cities</h1>
+
+    <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Active</th>
-                <th>CreatedAt</th>
-                <th>UpdatesAt</th>
-                <th>actions</th>
+                <th class="sortable">
+                    Name
+                    {% if queryParams.sort is defined and queryParams.sort == 'name' and queryParams.order is defined and queryParams.order == 'asc' %}
+                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'desc'})) }}">DESC</a>
+                    {% else %}
+                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'asc'})) }}">ASC</a>
+                    {% endif %}
+                </th>
+                <th class="sortable">
+                    Events
+                    {% if queryParams.sort is defined and queryParams.sort == 'events' and queryParams.order is defined and queryParams.order == 'desc' %}
+                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'asc'})) }}">ASC</a>
+                    {% else %}
+                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'desc'})) }}">DESC</a>
+                    {% endif %}
+                </th>
+                {% if is_granted('edit', cities) %}
+                <th>Actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
         {% for city in cities %}
             <tr>
-                <td>{{ city.id }}</td>
-                <td>{{ city.name }}</td>
-                <td>{{ city.active ? 'Yes' : 'No' }}</td>
-                <td>{{ city.createdAt ? city.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ city.updatesAt ? city.updatesAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('city_show', {'id': city.id}) }}">show</a>
-                    <a href="{{ path('city_edit', {'id': city.id}) }}">edit</a>
+                <td><a href="{{ path('city_show', {'slug': city.slug}) }}">{{ city.name }}</a></td>
+                <td>{{ city.events|length }}</td>
+                {% if is_granted('edit', cities) %}
+                <td class="actions-column">
+                    {% if is_granted('edit', city) %}
+                    <a class="button small" href="{{ path('city_edit', {'slug': city.slug}) }}">Edit</a>
+                    {% endif %}
+                    {% if is_granted('delete', city) %}
+                    {{ include('city/_delete_form.html.twig') }}
+                    {% endif %}
                 </td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="3">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('city_new') }}">Create new</a>
+    {% if is_granted('create', new_city) %}
+        <div id="new-city-form-container" data-toggler=".show-form">
+            <a class="button new-city-toggle" data-toggle="new-city-form-container">Add a new city</a>
+            <div class="show-form-toggle">
+                <h2>New city</h2>
+                {{ include('city/_form.html.twig', {'city': new_city}) }}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

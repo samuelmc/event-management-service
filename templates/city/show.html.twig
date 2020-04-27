@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ city.id }}</td>
-            </tr>
-            <tr>
                 <th>Name</th>
                 <td>{{ city.name }}</td>
             </tr>
@@ -20,19 +16,19 @@
                 <td>{{ city.active ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>CreatedAt</th>
+                <th>Created</th>
                 <td>{{ city.createdAt ? city.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>UpdatesAt</th>
-                <td>{{ city.updatesAt ? city.updatesAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Updated</th>
+                <td>{{ city.updatedAt ? city.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
     <a href="{{ path('city_index') }}">back to list</a>
 
-    <a href="{{ path('city_edit', {'id': city.id}) }}">edit</a>
+    <a href="{{ path('city_edit', {'slug': city.slug}) }}">edit</a>
 
     {{ include('city/_delete_form.html.twig') }}
 {% endblock %}

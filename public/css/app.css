@@ -6378,3 +6378,21 @@ html.is-reveal-open {
 
 main {
   margin-top: 2em; }
+
+.actions-column a {
+  display: inline-block; }
+
+.actions-column form {
+  display: inline-block; }
+
+.actions-column .button {
+  margin-bottom: 0; }
+
+#new-city-form-container .show-form-toggle {
+  display: none; }
+
+#new-city-form-container.show-form .show-form-toggle {
+  display: block; }
+
+#new-city-form-container.show-form .new-city-toggle {
+  display: none; }

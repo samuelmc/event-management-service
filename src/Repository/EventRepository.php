@@ -19,6 +19,30 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+    /**
+     * @param int|null $page
+     * @param int|null $itemsPerPage
+     * @param string|null $search
+     * @param string|null $sort
+     * @param string|null $order
+     * @return Event[]
+     */
+    public function findByPage(?int $page, ?int $itemsPerPage, string $search = '', string $sort = 'createdAt', string $order = 'desc')
+    {
+        if (!$page) $page = 1;
+        if (!$itemsPerPage || !in_array($itemsPerPage, [10,20,50,100])) $itemsPerPage = 10;
+        $offset = $itemsPerPage * ($page - 1);
+        $order = strtoupper($order);
+
+        $queryBuilder = $this->createQueryBuilder('event')
+            ->where("event.title LIKE CONCAT('%', :search, '%')")
+            ->setParameter('search', $search)
+            ->orderBy("event.{$sort}", $order)
+            ->setMaxResults($itemsPerPage)->setFirstResult($offset);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Event[] Returns an array of Event objects
     //  */

@@ -3,30 +3,50 @@
 namespace App\Controller;
 
 use App\Entity\City;
+use App\Entity\User;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Slugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/city")
+ * @Route(name="city_")
  */
 class CityController extends AbstractController
 {
     /**
-     * @Route("/", name="city_index", methods={"GET"})
+     * @Route("/cities", name="index", methods={"GET"})
+     * @param Request $request
+     * @param CityRepository $cityRepository
+     * @return Response
      */
-    public function index(CityRepository $cityRepository): Response
+    public function index(Request $request, CityRepository $cityRepository): Response
     {
+        $newCity = new City();
+        $form = $this->createForm(CityType::class, $newCity);
+
+        $search = $request->query->get('search', '');
+        $page = (int) $request->query->get('page', 1);
+        $items = (int) $request->query->get('items', 10);
+        $sort = $request->query->get('sort', 'createdAt');
+        $order = $request->query->get('order', 'desc');
+
         return $this->render('city/index.html.twig', [
-            'cities' => $cityRepository->findAll(),
+            'cities' => $cityRepository->findByPage($page, $items, $search, $sort, $order),
+            'new_city' => $newCity,
+            'form' => $form->createView(),
+            'queryParams' => $request->query->all()
         ]);
     }
 
     /**
-     * @Route("/new", name="city_new", methods={"GET","POST"})
+     * @Route("/city/new", name="new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -35,7 +55,13 @@ class CityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $slugger = New Slugger();
+            /** @var EntityManagerInterface $entityManager */
             $entityManager = $this->getDoctrine()->getManager();
+            /** @var User $user */
+            $user = $this->getUser();
+
+            $slugger->sluggifyEntity($entityManager, $city, 'name');
             $entityManager->persist($city);
             $entityManager->flush();
 
@@ -49,7 +75,9 @@ class CityController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="city_show", methods={"GET"})
+     * @Route("/city/{slug}", name="show", methods={"GET"})
+     * @param City $city
+     * @return Response
      */
     public function show(City $city): Response
     {
@@ -59,7 +87,10 @@ class CityController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="city_edit", methods={"GET","POST"})
+     * @Route("/city/{slug}/edit", name="edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param City $city
+     * @return Response
      */
     public function edit(Request $request, City $city): Response
     {
@@ -79,7 +110,10 @@ class CityController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="city_delete", methods={"DELETE"})
+     * @Route("/city/{slug}", name="delete", methods={"DELETE"})
+     * @param Request $request
+     * @param City $city
+     * @return Response
      */
     public function delete(Request $request, City $city): Response
     {
