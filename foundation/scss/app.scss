@@ -1,8 +1,17 @@
 @charset 'utf-8';
 
+@import "fontawesome";
+@import "regular";
+@import "solid";
+@import "brands";
+@import "v4-shims";
+
 @import 'settings';
 @import 'foundation';
 @import 'motion-ui';
+
+@import "foundation-select";
+@import "foundation-perfect-scrollbar";
 
 // Global styles
 @include foundation-global-styles;
@@ -62,5 +71,8 @@
 // Motion UI
 @include motion-ui-transitions;
 @include motion-ui-animations;
+
+@include foundation-perfect-scrollbar;
+@include foundation-select;
 
 @import "custom";

@@ -12,17 +12,17 @@
                 <th class="sortable">
                     Name
                     {% if queryParams.sort is defined and queryParams.sort == 'name' and queryParams.order is defined and queryParams.order == 'asc' %}
-                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'desc'})) }}">DESC</a>
+                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'desc'})) }}"><i class="fa fa-chevron-down"></i></a>
                     {% else %}
-                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'asc'})) }}">ASC</a>
+                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'asc'})) }}"><i class="fa fa-chevron-up"></i></a>
                     {% endif %}
                 </th>
                 <th class="sortable">
                     Events
                     {% if queryParams.sort is defined and queryParams.sort == 'events' and queryParams.order is defined and queryParams.order == 'desc' %}
-                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'asc'})) }}">ASC</a>
+                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'asc'})) }}"><i class="fa fa-chevron-up"></i></a>
                     {% else %}
-                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'desc'})) }}">DESC</a>
+                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'desc'})) }}"><i class="fa fa-chevron-down"></i></a>
                     {% endif %}
                 </th>
                 {% if is_granted('edit', cities) %}
@@ -53,6 +53,36 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div id="pagination-container">
+        <ul class="pagination">
+            <li class="pagination-previous{% if pagination.page == 1 %} disabled{% endif %}">
+                {% if pagination.page != 1 %}<a href="{{ path('city_index', queryParams|merge({'page': (pagination.page - 1)})) }}">{% endif %}
+                Previous <span class="show-for-sr">page</span>
+                {% if pagination.page != 1 %}</a>{% endif %}
+            </li>
+            {% for page in 1..pagination.pages %}
+                <li{% if page == pagination.page %} class="current"{% endif %}>
+                    {% if page != pagination.page %}<a href="{{ path('city_index', queryParams|merge({'page': page})) }}">{% endif %}
+                    {{ page }}
+                    {% if page != pagination.page %}</a>{% endif %}
+                </li>
+            {% endfor %}
+            <li class="pagination-next{% if pagination.page == pagination.pages %} disabled{% endif %}">
+                {% if pagination.page != pagination.pages %}<a href="{{ path('city_index', queryParams|merge({'page': (pagination.page + 1)})) }}">{% endif %}
+                Next <span class="show-for-sr">page</span>
+                {% if pagination.page != pagination.pages %}</a>{% endif %}
+            </li>
+        </ul>
+
+        <select id="item-per-page-selector" data-select data-query-params="{{ queryParams|json_encode }}">
+            {% for number in [10,20,50,100] %}
+                <option value="{{ number }}"{% if pagination.pageItems == number %} selected{% endif %}>{{ number }}</option>
+            {% endfor %}
+        </select>
+        <label for="item-per-page-selector">items per page</label>
+    </div>
+
 
     {% if is_granted('create', new_city) %}
         <div id="new-city-form-container" data-toggler=".show-form">

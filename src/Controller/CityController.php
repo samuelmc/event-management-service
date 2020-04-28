@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Controller;
 
@@ -31,15 +31,24 @@ class CityController extends AbstractController
 
         $search = $request->query->get('search', '');
         $page = (int) $request->query->get('page', 1);
-        $items = (int) $request->query->get('items', 10);
+        $items = (int) $request->query->get('items', 2);
         $sort = $request->query->get('sort', 'createdAt');
         $order = $request->query->get('order', 'desc');
+
+        $totalItems = $cityRepository->countCities($search);
+        $pages = ceil($totalItems/$items);
 
         return $this->render('city/index.html.twig', [
             'cities' => $cityRepository->findByPage($page, $items, $search, $sort, $order),
             'new_city' => $newCity,
             'form' => $form->createView(),
-            'queryParams' => $request->query->all()
+            'queryParams' => $request->query->all(),
+            'pagination' => [
+                'page' => $page,
+                'pages' => $pages,
+                'pageItems' => $items,
+                'totalItems' => $totalItems
+            ]
         ]);
     }
 

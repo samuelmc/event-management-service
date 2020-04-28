@@ -8,4 +8,7 @@ twig:
             '/js/jquery.min.js': 0
             '/js/what-input.min.js': 1
             '/js/foundation.min.js': 2
+            '/js/perfect-scrollbar.jquery.min.js': 10
+            '/js/foundation.perfectScrollbar.min.js': 11
+            '/js/foundation.select.min.js': 12
             '/js/app.js': 80

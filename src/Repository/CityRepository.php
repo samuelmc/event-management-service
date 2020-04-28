@@ -19,6 +19,16 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
+    public function countCities(?string $search): int
+    {
+        $count = $this->createQueryBuilder('city')
+            ->select('COUNT(city.id)')
+            ->where("city.name LIKE CONCAT('%', :search, '%')")
+            ->setParameter('search', $search);
+
+        return $count->getQuery()->getResult()[0][1];
+    }
+
     /**
      * @param int|null $page
      * @param int|null $itemsPerPage
@@ -31,7 +41,7 @@ class CityRepository extends ServiceEntityRepository
     public function findByPage(?int $page, ?int $itemsPerPage, string $search = '', string $sort = 'createdAt', string $order = 'desc')
     {
         if (!$page) $page = 1;
-        if (!$itemsPerPage || !in_array($itemsPerPage, [10,20,50,100])) $itemsPerPage = 10;
+        if (!$itemsPerPage || !in_array($itemsPerPage, [2,10,20,50,100])) $itemsPerPage = 10;
         if (!$search) $search = '';
         $offset = $itemsPerPage * ($page - 1);
         $order = strtoupper($order);
@@ -39,15 +49,20 @@ class CityRepository extends ServiceEntityRepository
         $orderByString = $sort == 'events' ? "city.createdAt" : "city.{$sort}";
 
         /** @var City[] $cities */
-        $cities = $this->createQueryBuilder('city')
+        $citiesQuery = $this->createQueryBuilder('city')
             ->where("city.name LIKE CONCAT('%', :search, '%')")
             ->setParameter('search', $search)
-            ->orderBy($orderByString, $order)
-            ->setMaxResults($itemsPerPage)->setFirstResult($offset)
-            ->getQuery()->getResult();
+            ->orderBy($orderByString, $order);
 
         if ($sort == 'events') {
+            $cities = $citiesQuery->getQuery()->getResult();
             usort($cities, [$this, "sortByEventsCount{$order}"]);
+            $cities = array_slice($cities, $offset, $itemsPerPage);
+        }
+        else {
+            $cities = $citiesQuery
+                ->setMaxResults($itemsPerPage)->setFirstResult($offset)
+                ->getQuery()->getResult();
         }
 
         return $cities;

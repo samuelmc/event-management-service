@@ -5,14 +5,20 @@ var autoprefixer  = require('autoprefixer');
 
 var sassPaths = [
     'node_modules/foundation-sites/scss',
-    'node_modules/motion-ui/src'
+    'node_modules/motion-ui/src',
+    'node_modules/@moncareyws/foundation-perfect-scrollbar/src/scss/plugin',
+    'node_modules/@moncareyws/foundation-select/src/scss/plugin',
+    'node_modules/@fortawesome/fontawesome-free/scss'
 ];
 
 var jsPaths = [
     'js/*.js',
     'node_modules/jquery/dist/jquery.min.js',
     'node_modules/what-input/dist/what-input.min.js',
-    'node_modules/foundation-sites/dist/js/foundation.min.js'
+    'node_modules/foundation-sites/dist/js/foundation.min.js',
+    "node_modules/perfect-scrollbar/dist/js/perfect-scrollbar.jquery.min.js",
+    "node_modules/@moncareyws/foundation-perfect-scrollbar/dist/js/foundation.perfectScrollbar.min.js",
+    "node_modules/@moncareyws/foundation-select/dist/js/foundation.select.min.js"
 ];
 
 function sass() {
