@@ -49,4 +49,4 @@ create the database, run migrations & load fixtures
 
 `php bin/console doctrine:fixtures:load`
 
-Setup an Apache VirtualHost with <project location>/public as DocumentRoot and AllowOverride All
+Setup an Apache VirtualHost with \<project-location\>/public as DocumentRoot and AllowOverride All
