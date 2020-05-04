@@ -19,3 +19,5 @@
 ###> phpstorm settings ###
 /.idea/
 ###< phpstorm settings ###
+
+/.patches/
