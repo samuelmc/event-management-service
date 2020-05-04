@@ -2,12 +2,34 @@ main {
   margin-top: 2em;
 }
 
+#search-widget {
+  max-width: 600px;
+  float: right;
+}
+
+.sortable {
+  .button {
+    float: right;
+    margin-bottom: 0;
+    padding: .4em .5em .2em;
+    font-size: .7em;
+  }
+}
+
+.delete-form {
+  display: inline-block;
+}
+
 .actions-column {
+  text-align: right;
+
   a {
     display: inline-block;
   }
   form {
-    display: inline-block;
+    button.button.alert {
+      font-size: map_get($button-sizes, small);
+    }
   }
   .button {
     margin-bottom: 0;
@@ -15,12 +37,15 @@ main {
 }
 
 #pagination-container {
-  > * {
-    display: inline-block;
-  }
+  text-align: center;
 
-  .select-wrapper {
-    width: 5em;
+  p {
+    font-size: .85em;
+    color: lighten($body-font-color, 20%);
+    .select-wrapper {
+      display: inline-block;
+      width: 6em;
+    }
   }
 
 }

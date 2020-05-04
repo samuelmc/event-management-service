@@ -3,32 +3,45 @@
 {% block title %}City{% endblock %}
 
 {% block content %}
-    <h1>City</h1>
+    <h1>{{ city.name|capitalize }}</h1>
 
-    <table class="table">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Created</th>
+            <th>Updated</th>
+            {% if is_granted('edit', city) %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
         <tbody>
             <tr>
-                <th>Name</th>
-                <td>{{ city.name }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{{ city.active ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ city.createdAt ? city.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{{ city.updatedAt ? city.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ city.name|capitalize }}</td>
+                <td>{{ city.createdAt|date('d/m/Y H:i') }}</td>
+                <td>{{ city.updatedAt|date('d/m/Y H:i') }}</td>
+                {% if is_granted('edit', city) %}
+                    <td class="actions-column">
+                        {% if is_granted('edit', city) %}
+                            <a class="button small" href="{{ path('city_edit', {'slug': city.slug}) }}">Edit</a>
+                        {% endif %}
+                        {% if is_granted('delete', city) %}
+                            {{ include('city/_delete_form.html.twig') }}
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('city_index') }}">back to list</a>
+    <a class="button" href="{{ path('city_index') }}"><i class="fa fa-chevron-left"></i> Back to list</a>
 
-    <a href="{{ path('city_edit', {'slug': city.slug}) }}">edit</a>
+    <h2>Events in {{ city.name|capitalize }}</h2>
 
-    {{ include('city/_delete_form.html.twig') }}
+    {{ include('event/_event_list.html.twig') }}
+
+{#    <a class="button" href="{{ path('city_edit', {'slug': city.slug}) }}">Edit</a>#}
+
+{#    {{ include('city/_delete_form.html.twig') }}#}
 {% endblock %}

@@ -6,6 +6,8 @@ use App\Entity\City;
 use App\Entity\User;
 use App\Form\CityType;
 use App\Repository\CityRepository;
+use App\Repository\EventRepository;
+use App\Service\RequestHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Slugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,56 +21,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class CityController extends AbstractController
 {
     /**
-     * @Route("/cities", name="index", methods={"GET"})
+     * @Route("/cities", name="index", methods={"GET","POST"})
      * @param Request $request
      * @param CityRepository $cityRepository
      * @return Response
      */
-    public function index(Request $request, CityRepository $cityRepository): Response
+    public function index(Request $request, RequestHelper $requestHelper, CityRepository $cityRepository): Response
     {
         $newCity = new City();
         $form = $this->createForm(CityType::class, $newCity);
-
-        $search = $request->query->get('search', '');
-        $page = (int) $request->query->get('page', 1);
-        $items = (int) $request->query->get('items', 2);
-        $sort = $request->query->get('sort', 'createdAt');
-        $order = $request->query->get('order', 'desc');
-
-        $totalItems = $cityRepository->countCities($search);
-        $pages = ceil($totalItems/$items);
-
-        return $this->render('city/index.html.twig', [
-            'cities' => $cityRepository->findByPage($page, $items, $search, $sort, $order),
-            'new_city' => $newCity,
-            'form' => $form->createView(),
-            'queryParams' => $request->query->all(),
-            'pagination' => [
-                'page' => $page,
-                'pages' => $pages,
-                'pageItems' => $items,
-                'totalItems' => $totalItems
-            ]
-        ]);
-    }
-
-    /**
-     * @Route("/city/new", name="new", methods={"GET","POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
-    {
-        $city = new City();
-        $form = $this->createForm(CityType::class, $city);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $slugger = New Slugger();
             /** @var EntityManagerInterface $entityManager */
             $entityManager = $this->getDoctrine()->getManager();
-            /** @var User $user */
-            $user = $this->getUser();
 
             $slugger->sluggifyEntity($entityManager, $city, 'name');
             $entityManager->persist($city);
@@ -77,10 +44,24 @@ class CityController extends AbstractController
             return $this->redirectToRoute('city_index');
         }
 
-        return $this->render('city/new.html.twig', [
-            'city' => $city,
+        $response = New Response();
+        list($search, $page, $items, $sort, $order)
+            = $requestHelper->listRequestData($request, $response, 'cities');
+
+        $requestHelper->rememberSortingSelection($request, $response, 'cities');
+
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($page > 1) $queryParams['page'] = $page;
+
+        return $response->setContent($this->renderView('city/index.html.twig', [
+            'cities' => $cityRepository->findByPage($page, $items, $search, $sort, $order),
+            'new_city' => $newCity,
             'form' => $form->createView(),
-        ]);
+            'queryParams' => $queryParams,
+            'sorting' => ['field' => $sort, 'order' => $order],
+            'pagination' => $requestHelper->getPaginationParams($request, $response, $cityRepository)
+        ]));
     }
 
     /**
@@ -88,11 +69,25 @@ class CityController extends AbstractController
      * @param City $city
      * @return Response
      */
-    public function show(City $city): Response
+    public function show(Request $request, RequestHelper $requestHelper, CityRepository $cityRepository, EventRepository $eventRepository, City $city): Response
     {
-        return $this->render('city/show.html.twig', [
+        $response = New Response();
+        list($search, $page, $items, $sort, $order)
+            = $requestHelper->listRequestData($request, $response, 'events');
+
+        $requestHelper->rememberSortingSelection($request, $response, 'events');
+
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($page > 1) $queryParams['page'] = $page;
+
+        return $response->setContent($this->renderView('city/show.html.twig', [
             'city' => $city,
-        ]);
+            'events' => $eventRepository->findByPage($page, $items, $search, $sort, $order, $city),
+            'queryParams' => $queryParams,
+            'sorting' => ['field' => $sort, 'order' => $order],
+            'pagination' => $requestHelper->getPaginationParams($request, $response, $eventRepository)
+        ]));
     }
 
     /**

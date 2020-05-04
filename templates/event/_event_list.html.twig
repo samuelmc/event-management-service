@@ -1,0 +1,41 @@
+{{ include('partials/search_form.html.twig') }}
+
+<table class="table">
+    <thead>
+    <tr>
+        {{ include('partials/sortable_table_header.html.twig', {label: 'Event', field: 'title', defaultDir: 'asc'}) }}
+        {{ include('partials/sortable_table_header.html.twig', {label:'Max Participants', field: 'maxParticipants', defaultDir: 'desc'}) }}
+        {{ include('partials/sortable_table_header.html.twig', {label:'From', field: 'startTime', defaultDir: 'asc'}) }}
+        {{ include('partials/sortable_table_header.html.twig', {label:'To', field: 'endTime', defaultDir: 'asc'}) }}
+        {% if app.user %}
+            <th class="actions-column">Actions</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in events %}
+        <tr>
+            <td><a href="{{ path('event_show', {'slug': event.slug}) }}">{{ event.title }}</a></td>
+            <td>{{ event.maxParticipants }}</td>
+            <td>{{ event.startTime ? event.startTime|date('d/m/Y H:i') : '' }}</td>
+            <td>{{ event.endTime ? event.endTime|date('d/m/Y H:i') : '' }}</td>
+            {% if app.user %}
+                <td class="actions-column">
+                    {% if is_granted('edit',event) %}
+                        <a class="button small" href="{{ path('event_edit', {'slug': event.slug}) }}">Edit</a>
+                    {% endif %}
+                    {% if is_granted('delete',event) %}
+                        {{ include('event/_delete_form.html.twig') }}
+                    {% endif %}
+                </td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">There aren't any events at this time.</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{{ include('partials/pagination.html.twig') }}

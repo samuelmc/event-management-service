@@ -29,10 +29,14 @@ class CityVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        $isCityArray = true;
+        $isCityArray = false;
         if (is_array($subject)) {
+            $isCityArray = true;
             foreach ($subject as $city) {
-                if (!$city instanceof City) $isCityArray = false;
+                if (!$city instanceof City) {
+                    $isCityArray = false;
+                    break;
+                }
             }
         }
 
@@ -52,21 +56,21 @@ class CityVoter extends Voter
         }
 
         if ($this->supports($attribute, $subject)) {
-            return call_user_func([$this, $this->attributeMethods[$attribute]],$user, $subject);
+            return call_user_func([$this, $this->attributeMethods[$attribute]]);
         }
 
         return false;
     }
 
-    private function canCreateEvent(User $user, City $subject) {
+    private function canCreateCity() {
         return $this->security->isGranted('ROLE_ADMIN');
     }
 
-    private function canEditEvent(User $user, City $subject) {
+    private function canEditCity() {
         return $this->security->isGranted('ROLE_ADMIN');
     }
 
-    private function canDeleteEvent(User $user, City $subject) {
+    private function canDeleteCity() {
         return $this->security->isGranted('ROLE_SUPER_ADMIN');
     }
 }

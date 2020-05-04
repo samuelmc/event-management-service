@@ -12,11 +12,16 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method City[]    findAll()
  * @method City[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CityRepository extends ServiceEntityRepository
+class CityRepository extends ServiceEntityRepository implements CountableRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, City::class);
+    }
+
+    public function countMethod(): callable
+    {
+        return [$this, 'countCities'];
     }
 
     public function countCities(?string $search): int
@@ -69,14 +74,14 @@ class CityRepository extends ServiceEntityRepository
     }
 
     private function sortByEventsCountASC(City $a, City $b) {
-        if (count($a->getEvents()) > count($b->getEvents())) return 1;
-        if (count($a->getEvents()) < count($b->getEvents())) return -1;
+        if (count($a->getCurrentAndFutureEvents()) > count($b->getCurrentAndFutureEvents())) return 1;
+        if (count($a->getCurrentAndFutureEvents()) < count($b->getCurrentAndFutureEvents())) return -1;
         return 0;
     }
 
     private function sortByEventsCountDESC(City $a, City $b) {
-        if (count($a->getEvents()) > count($b->getEvents())) return -1;
-        if (count($a->getEvents()) < count($b->getEvents())) return 1;
+        if (count($a->getCurrentAndFutureEvents()) > count($b->getCurrentAndFutureEvents())) return -1;
+        if (count($a->getCurrentAndFutureEvents()) < count($b->getCurrentAndFutureEvents())) return 1;
         return 0;
     }
 }

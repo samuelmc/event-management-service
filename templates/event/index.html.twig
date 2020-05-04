@@ -5,45 +5,7 @@
 {% block content %}
     <h1>Event index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>MaxParticipants</th>
-                <th>StartTime</th>
-                <th>EndTime</th>
-                {% if app.user %}
-                <th>actions</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.title }}</td>
-                <td>{{ event.description }}</td>
-                <td>{{ event.maxParticipants }}</td>
-                <td>{{ event.startTime ? event.startTime|date('d/m/Y H:i') : '' }}</td>
-                <td>{{ event.endTime ? event.endTime|date('d/m/Y H:i') : '' }}</td>
-                {% if app.user %}
-                    <td class="actions-column">
-                    {% if is_granted('edit',event) %}
-                        <a class="button small" href="{{ path('event_edit', {'slug': event.slug}) }}">Edit</a>
-                    {% endif %}
-                    {% if is_granted('delete',event) %}
-                        {{ include('event/_delete_form.html.twig') }}
-                    {% endif %}
-                </td>
-                {% endif %}
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">There aren't any events at this time.</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {{ include('event/_event_list.html.twig') }}
 
 
     {% if app.user %}

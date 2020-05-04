@@ -1,0 +1,39 @@
+{% extends 'layout/page.html.twig' %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+    <h1>Event Management Service</h1>
+
+    <h2>Upcomming events</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Event</th>
+            <th>Max participants</th>
+            <th>From</th>
+            <th>To</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+        <tr>
+            <td>
+                <a href="{{ path('event_show', {'slug': event.slug}) }}">{{ event.title }}</a>
+            </td>
+            <td>
+                {{ event.maxParticipants }}
+            </td>
+            <td>
+                {{ event.startTime|date('d/m/Y H:i') }}
+            </td>
+            <td>
+                {{ event.endTime|date('d/m/Y H:i') }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

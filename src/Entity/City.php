@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Expr\Comparison;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
@@ -19,6 +21,11 @@ class City
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,11 +52,6 @@ class City
      */
     private $events;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $slug;
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -58,6 +60,18 @@ class City
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -127,6 +141,11 @@ class City
         return $this->events;
     }
 
+    public function getCurrentAndFutureEvents(): Collection
+    {
+        return $this->events->matching(new Criteria(new Comparison('endTime', Comparison::GT, new \DateTime())));
+    }
+
     public function addEvent(Event $event): self
     {
         if (!$this->events->contains($event)) {
@@ -146,18 +165,6 @@ class City
                 $event->setCity(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
 
         return $this;
     }

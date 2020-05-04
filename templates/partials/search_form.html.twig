@@ -1,0 +1,8 @@
+<form id="search-widget" data-query-params="{{ queryParams|json_encode(constant('JSON_FORCE_OBJECT')) }}">
+    <div class="input-group">
+        <input name="search" class="input-group-field" type="text" value="{{ queryParams.search is defined ? queryParams.search : '' }}">
+        <div class="input-group-button">
+            <button type="submit" class="button">Search</button>
+        </div>
+    </div>
+</form>

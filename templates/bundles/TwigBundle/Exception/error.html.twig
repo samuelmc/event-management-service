@@ -1,0 +1,12 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'layout/page.html.twig' %}
+
+{% block content %}
+    <div class="callout alert">
+        <h1>{{ status_code }} {{ status_text }}</h1>
+        <p>
+            Something is broken. Please let us know what you were doing when this error occurred.
+            We will fix it as soon as possible. Sorry for any inconvenience caused.
+        </p>
+    </div>
+{% endblock %}

@@ -6,27 +6,14 @@
 
     <h1>Cities</h1>
 
+    {{ include('partials/search_form.html.twig') }}
     <table>
         <thead>
             <tr>
-                <th class="sortable">
-                    Name
-                    {% if queryParams.sort is defined and queryParams.sort == 'name' and queryParams.order is defined and queryParams.order == 'asc' %}
-                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'desc'})) }}"><i class="fa fa-chevron-down"></i></a>
-                    {% else %}
-                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'name','order':'asc'})) }}"><i class="fa fa-chevron-up"></i></a>
-                    {% endif %}
-                </th>
-                <th class="sortable">
-                    Events
-                    {% if queryParams.sort is defined and queryParams.sort == 'events' and queryParams.order is defined and queryParams.order == 'desc' %}
-                        <a class="button hollow secondary tiny sort-asc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'asc'})) }}"><i class="fa fa-chevron-up"></i></a>
-                    {% else %}
-                        <a class="button hollow secondary tiny sort-desc" href="{{ path('city_index', queryParams|merge({'sort':'events','order':'desc'})) }}"><i class="fa fa-chevron-down"></i></a>
-                    {% endif %}
-                </th>
+                {{ include('partials/sortable_table_header.html.twig', {label: 'Name', field: 'name', defaultDir: 'asc'}) }}
+                {{ include('partials/sortable_table_header.html.twig', {label: 'Events', field: 'events', defaultDir: 'desc'}) }}
                 {% if is_granted('edit', cities) %}
-                <th>Actions</th>
+                <th class="actions-column">Actions</th>
                 {% endif %}
             </tr>
         </thead>
@@ -34,7 +21,7 @@
         {% for city in cities %}
             <tr>
                 <td><a href="{{ path('city_show', {'slug': city.slug}) }}">{{ city.name }}</a></td>
-                <td>{{ city.events|length }}</td>
+                <td>{{ city.currentAndFutureEvents|length }}</td>
                 {% if is_granted('edit', cities) %}
                 <td class="actions-column">
                     {% if is_granted('edit', city) %}
@@ -54,35 +41,7 @@
         </tbody>
     </table>
 
-    <div id="pagination-container">
-        <ul class="pagination">
-            <li class="pagination-previous{% if pagination.page == 1 %} disabled{% endif %}">
-                {% if pagination.page != 1 %}<a href="{{ path('city_index', queryParams|merge({'page': (pagination.page - 1)})) }}">{% endif %}
-                Previous <span class="show-for-sr">page</span>
-                {% if pagination.page != 1 %}</a>{% endif %}
-            </li>
-            {% for page in 1..pagination.pages %}
-                <li{% if page == pagination.page %} class="current"{% endif %}>
-                    {% if page != pagination.page %}<a href="{{ path('city_index', queryParams|merge({'page': page})) }}">{% endif %}
-                    {{ page }}
-                    {% if page != pagination.page %}</a>{% endif %}
-                </li>
-            {% endfor %}
-            <li class="pagination-next{% if pagination.page == pagination.pages %} disabled{% endif %}">
-                {% if pagination.page != pagination.pages %}<a href="{{ path('city_index', queryParams|merge({'page': (pagination.page + 1)})) }}">{% endif %}
-                Next <span class="show-for-sr">page</span>
-                {% if pagination.page != pagination.pages %}</a>{% endif %}
-            </li>
-        </ul>
-
-        <select id="item-per-page-selector" data-select data-query-params="{{ queryParams|json_encode }}">
-            {% for number in [10,20,50,100] %}
-                <option value="{{ number }}"{% if pagination.pageItems == number %} selected{% endif %}>{{ number }}</option>
-            {% endfor %}
-        </select>
-        <label for="item-per-page-selector">items per page</label>
-    </div>
-
+    {{ include('partials/pagination.html.twig') }}
 
     {% if is_granted('create', new_city) %}
         <div id="new-city-form-container" data-toggler=".show-form">

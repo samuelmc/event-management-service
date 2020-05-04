@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\User;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Service\RequestHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Slugger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,34 +26,36 @@ class EventController extends AbstractController
      */
     public function home(EventRepository $eventRepository): Response
     {
-        return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+        return $this->render('event/home.html.twig', [
+            'events' => $eventRepository->findHomePageEvents(),
         ]);
     }
 
     /**
      * @Route("/events", name="index", methods={"GET"})
      * @param Request $request
+     * @param RequestHelper $requestHelper
      * @param EventRepository $eventRepository
      * @return Response
      */
-    public function index(Request $request, EventRepository $eventRepository): Response
+    public function index(Request $request, RequestHelper $requestHelper, EventRepository $eventRepository): Response
     {
+        $response = New Response();
+        list($search, $page, $items, $sort, $order)
+            = $requestHelper->listRequestData($request, $response, 'events');
 
-        $search = $request->query->get('search', '');
-        $page = (int) $request->query->get('page', 1);
-        $items = (int) $request->query->get('items', 10);
-        $sort = $request->query->get('sort', 'createdAt');
-        $order = $request->query->get('order', 'desc');
+        $requestHelper->rememberSortingSelection($request, $response, 'events');
 
-        return $this->render('event/index.html.twig', [
+        $queryParams = [];
+        if ($search) $queryParams['search'] = $search;
+        if ($page > 1) $queryParams['page'] = $page;
+
+        return $response->setContent($this->renderView('event/index.html.twig', [
             'events' => $eventRepository->findByPage($page, $items, $search, $sort, $order),
-            'search' => $search,
-            'page' => $page,
-            'items' => $items,
-            'sort' => $sort,
-            'order' => $order,
-        ]);
+            'queryParams' => $queryParams,
+            'sorting' => ['field' => $sort, 'order' => $order],
+            'pagination' => $requestHelper->getPaginationParams($request, $response, $eventRepository)
+        ]));
     }
 
     /**

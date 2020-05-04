@@ -1,0 +1,60 @@
+<div id="pagination-container">
+    <p class="text-center">
+        Showing
+        <select id="item-per-page-selector" data-select data-query-params="{{ queryParams|json_encode(constant('JSON_FORCE_OBJECT')) }}">
+            {% for number in [10,20,50,100] %}
+                <option value="{{ number }}"{% if pagination.pageItems == number %} selected="selected"{% endif %}>{{ number }}</option>
+            {% endfor %}
+        </select>
+        items from {{ pagination.from }} to {{ pagination.to }} of {{ pagination.totalItems }}
+    </p>
+    <ul class="pagination text-center">
+        <li class="pagination-previous{% if pagination.page == 1 %} disabled{% endif %}">
+            {% if pagination.page != 1 %}<a href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'page': (pagination.page - 1)}}) }}">{% endif %}
+                Previous <span class="show-for-sr">page</span>
+                {% if pagination.page != 1 %}</a>{% endif %}
+        </li>
+        {% for page in 1..pagination.pages %}
+            {% if pagination.pages > 15 %}
+                {% if loop.index < 4 or (pagination.page < 8 and loop.index < (pagination.page+3)) %}
+                    <li{% if page == pagination.page %} class="current"{% endif %}>
+                        {% if page != pagination.page %}<a href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'page': page}}) }}">{% endif %}
+                            {{ page }}
+                            {% if page != pagination.page %}</a>{% endif %}
+                    </li>
+                {% endif %}
+                {% if (loop.index == 4 and (pagination.page < 3 or pagination.page > 7)) or (pagination.page > 2 and pagination.page < 8 and loop.index == (pagination.page+2)) %}
+                    <li class="ellipsis" aria-hidden="true"></li>
+                {% endif %}
+                {% if loop.index > 4 and pagination.page > 7 and pagination.page < (pagination.pages-6) and loop.index > (pagination.page-3) and loop.index < (pagination.page+3) %}
+                    <li{% if page == pagination.page %} class="current"{% endif %}>
+                        {% if page != pagination.page %}<a href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'page': page}}) }}">{% endif %}
+                            {{ page }}
+                            {% if page != pagination.page %}</a>{% endif %}
+                    </li>
+                {% endif %}
+                {% if (loop.revindex == 4 and pagination.page > 7 and pagination.page < (pagination.pages-6)) %}
+                    <li class="ellipsis" aria-hidden="true"></li>
+                {% endif %}
+                {% if loop.revindex < 4 or (pagination.page > (pagination.pages-7) and loop.index > (pagination.page-3)) %}
+                    <li{% if page == pagination.page %} class="current"{% endif %}>
+                        {% if page != pagination.page %}<a href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'page': page}}) }}">{% endif %}
+                            {{ page }}
+                            {% if page != pagination.page %}</a>{% endif %}
+                    </li>
+                {% endif %}
+            {% else %}
+                <li{% if page == pagination.page %} class="current"{% endif %}>
+                    {% if page != pagination.page %}<a href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'page': page}}) }}">{% endif %}
+                        {{ page }}
+                        {% if page != pagination.page %}</a>{% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+        <li class="pagination-next{% if pagination.page == pagination.pages %} disabled{% endif %}">
+            {% if pagination.page != pagination.pages %}<a href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'page': (pagination.page + 1)}}) }}">{% endif %}
+                Next <span class="show-for-sr">page</span>
+                {% if pagination.page != pagination.pages %}</a>{% endif %}
+        </li>
+    </ul>
+</div>

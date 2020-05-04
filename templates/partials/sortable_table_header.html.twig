@@ -1,0 +1,12 @@
+<th class="sortable">
+    {{ label }}
+    {% if sorting.field == field and sorting.order == defaultDir %}
+        <a class="button hollow secondary" href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'sort':field,'order': defaultDir == 'desc' ? 'asc' : 'desc'}}) }}">
+            <i class="fa fa-chevron-{{ defaultDir == 'desc' ? 'up' : 'down' }}"></i>
+        </a>
+    {% else %}
+        <a class="button hollow secondary" href="{{ include('partials/uri_string.txt.twig', {'queryExtra': {'sort':field,'order':defaultDir == 'desc' ? 'desc' : 'asc'}}) }}">
+            <i class="fa fa-chevron-{{ defaultDir == 'desc' ? 'down' : 'up' }}"></i>
+        </a>
+    {% endif %}
+</th>

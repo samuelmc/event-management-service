@@ -1,0 +1,10 @@
+{% extends 'layout/page.html.twig' %}
+
+{% block content %}
+    <div class="callout warning">
+        <h1>403 Access denied</h1>
+        <p>
+            You do not have permission to access this page. Please <a href="{{ path('app_login') }}">login</a>.
+        </p>
+    </div>
+{% endblock %}

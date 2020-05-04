@@ -41,14 +41,14 @@
             </tr>
             <tr>
                 <th>UpdateAt</th>
-                <td>{{ event.updateAt ? event.updateAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event.updatedAt ? event.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('event_index') }}">back to list</a>
+    <a class="button" href="{{ path('event_index') }}"><i class="fa fa-chevron-left"></i> Back to list</a>
 
-    <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
+    <a class="button" href="{{ path('event_edit', {'slug': event.slug}) }}">Edit</a>
 
     {{ include('event/_delete_form.html.twig') }}
 {% endblock %}

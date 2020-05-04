@@ -1,0 +1,12 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'layout/page.html.twig' %}
+
+{% block content %}
+    <div class="callout warning">
+        <h1>404 Not found</h1>
+        <p>
+            The requested page couldn't be located. Checkout for any URL
+            misspelling or <a href="{{ path('event_home') }}">return to the homepage</a>.
+        </p>
+    </div>
+{% endblock %}

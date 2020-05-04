@@ -13617,20 +13617,36 @@ html.is-reveal-open {
 main {
   margin-top: 2em; }
 
-.actions-column a {
+#search-widget {
+  max-width: 600px;
+  float: right; }
+
+.sortable .button {
+  float: right;
+  margin-bottom: 0;
+  padding: .4em .5em .2em;
+  font-size: .7em; }
+
+.delete-form {
   display: inline-block; }
 
-.actions-column form {
-  display: inline-block; }
+.actions-column {
+  text-align: right; }
+  .actions-column a {
+    display: inline-block; }
+  .actions-column form button.button.alert {
+    font-size: 0.75rem; }
+  .actions-column .button {
+    margin-bottom: 0; }
 
-.actions-column .button {
-  margin-bottom: 0; }
-
-#pagination-container > * {
-  display: inline-block; }
-
-#pagination-container .select-wrapper {
-  width: 5em; }
+#pagination-container {
+  text-align: center; }
+  #pagination-container p {
+    font-size: .85em;
+    color: #3d3d3d; }
+    #pagination-container p .select-wrapper {
+      display: inline-block;
+      width: 6em; }
 
 #new-city-form-container .show-form-toggle {
   display: none; }
