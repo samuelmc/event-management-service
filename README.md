@@ -50,3 +50,5 @@ create the database, run migrations & load fixtures
 `php bin/console doctrine:fixtures:load`
 
 Setup an Apache VirtualHost with \<project-location\>/public as DocumentRoot and AllowOverride All
+
+See [Configuring a Web Server](https://symfony.com/doc/4.4/setup/web_server_configuration.html) for more details
