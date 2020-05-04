@@ -42,5 +42,7 @@ setup the database connection in .env or .env.test:
 create the database, run migrations & load fixtures
 
 `php bin/conosle doctrine:database:create`
+
 `php bin/console doctrine:migrations:migrate`
+
 `php bin/console doctrine:fixtures:load`
