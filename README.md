@@ -51,4 +51,10 @@ create the database, run migrations & load fixtures
 
 Setup an Apache VirtualHost with \<project-location\>/public as DocumentRoot and AllowOverride All
 
-See [Configuring a Web Server](https://symfony.com/doc/4.4/setup/web_server_configuration.html) for more details
+See [Configuring a Web Server](https://symfony.com/doc/4.4/setup/web_server_configuration.html) for more details.
+
+There are 4 users for testing in the fixtures (usernames and passwords are identical):
+- Super Admin
+- Admin
+- User
+- User Bis
