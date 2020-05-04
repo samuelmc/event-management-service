@@ -21,6 +21,8 @@ Setup a basic LAMP server on a VPS, VM or any locally installed Linux Distributi
         - PDO
 
 - MySQL or MariaDB
+    - user with create database permission
+    
 - Composer
 
 To check your installations you can use the [symfony CLI](https://symfony.com/download):
@@ -46,3 +48,5 @@ create the database, run migrations & load fixtures
 `php bin/console doctrine:migrations:migrate`
 
 `php bin/console doctrine:fixtures:load`
+
+Setup an Apache VirtualHost with <project location>/public as DocumentRoot and AllowOverride All
